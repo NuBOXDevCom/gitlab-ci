@@ -13,6 +13,10 @@ RUN apt-get update && \
         libssl-dev \
         zlib1g-dev
 
+COPY conf/php.ini /usr/local/etc/php/
+
+RUN yes | pecl install xdebug
+RUN docker-php-ext-install xdebug
 RUN docker-php-ext-install pdo_mysql
 RUN docker-php-ext-install zip
 
@@ -21,11 +25,6 @@ RUN docker-php-ext-configure gd \
         --with-jpeg-dir=/usr/lib \
         --with-freetype-dir=/usr/include/freetype2 && \
     docker-php-ext-install gd
-
-RUN yes | pecl install xdebug \
-    && echo "zend_extension=$(find /usr/lib/php/extensions/ -name xdebug.so)" > $PHP_INI_DIR/conf.d/xdebug.ini
-
-COPY conf/php.ini /usr/local/etc/php/
 
 RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/local/bin/composer
