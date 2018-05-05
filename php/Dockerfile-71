@@ -16,7 +16,7 @@ RUN apt-get update && \
 COPY conf/php.ini /usr/local/etc/php/
 
 RUN yes | pecl install xdebug
-RUN docker-php-ext-install xdebug
+RUN docker-php-ext-enable xdebug
 RUN docker-php-ext-install pdo_mysql
 RUN docker-php-ext-install zip
 
